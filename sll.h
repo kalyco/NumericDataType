@@ -18,7 +18,7 @@ class SLinkedList {
   {
   }
 
-	void reverse()
+  	void reverse()
 	{
 	  if (mHead == nullptr) return;
   	recursiveReverse(mHead);
@@ -191,7 +191,7 @@ class SLinkedList {
   
  private:
 
- 	void recursiveReverse(SLLNode* head_ref) {
+  void recursiveReverse(SLLNode* head_ref) {
   	if (head_ref == nullptr) return;
 	  SLLNode* rest = (head_ref)->next();
   	if (rest == nullptr) {
@@ -201,7 +201,7 @@ class SLinkedList {
  	 recursiveReverse(rest);
  	 rest->setNext(head_ref);
  	 head_ref->setNext(nullptr);
- 
+
  	 head_ref = rest;
 	}
   
@@ -282,12 +282,5 @@ class SLinkedList {
   int mSize;
     
 };
-
-/// Overloaded operator<< for outputing a list
-ostream& operator<<(ostream& s, const SLinkedList& aList)
-{
-  aList.output(s);
-  return s;
-}
 
 #endif

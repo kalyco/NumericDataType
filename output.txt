@@ -1,0 +1,27 @@
+unsigned create
+value: 0
+Running sum is: 0
+
+Add:  copy
+string create
+vals: 9789089080808908089080808098908908908908
+sum9total: 9
+remainder =9789089080808908089080808098908908908908
+total9789089080808908089080808098908908908908
+string create
+assign
+not equal yo
+copy. I've found the loop
+cleanupp
+cleaned
+after cleanup
+after reassign
+after copy
+destroid
+cleanupp
+cleaned
+destroid
+cleanupp
+cleaned
+destroid
+cleanupp

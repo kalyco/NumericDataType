@@ -11,20 +11,23 @@ using namespace std;
 class Jumbo {
  private:
   SLinkedList * mLL;
-  int mLen;
+  size_t mLen;
 
   void copy(const Jumbo & other);
   void cleanup();
 
   void setLen(unsigned int n);
-  void createList(const string& s);
+  void createList(string s);
   void createList(unsigned int n);
-  int convertToASCII(string s, int idx) const;
+  int convertToASCII(char s) const;
+  int getASCIISum(char c1, char c2) const;
+  string getRemainder(string s1, string s2) const;
+  void addToTotal(int sum, int i, char * s) const;
 
  public:
 
   // Create from an existing integer value 
-  Jumbo(unsigned int value); 	
+  Jumbo( unsigned int value ); 	
   
   // Create from a string representation (e.g. '73287473284237842947328432423789427')
   Jumbo( const string& ); 
@@ -45,8 +48,6 @@ class Jumbo {
   string str() const;
 
   int getLen() const;
-
-  void reverseList();
 };
 
 #endif
