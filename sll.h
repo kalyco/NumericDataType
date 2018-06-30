@@ -68,7 +68,6 @@ class SLinkedList {
   /// Delete everything
   void removeAll()
   {
-    cout << "this could be a problem yeah?" << endl;
     while(mSize > 0) {
       removeFront();
     }
@@ -188,6 +187,10 @@ class SLinkedList {
   const SLLNode* head() const
   {
     return mHead;
+  }
+
+  int getSize() {
+    return mSize;
   }
   
  private:

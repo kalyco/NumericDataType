@@ -11,81 +11,67 @@
 using namespace std;
 
 Jumbo::Jumbo(unsigned int value)
+	:mLen(0)
 {
-	cout << "unsigned create" << endl;
-	cout << "value: " << value << endl;
 	mLL = new SLinkedList;
+	cout << "setlen" << value << endl;
 	setLen(value);
 	createList(value);
 }
 
 Jumbo::Jumbo(const string& s)
 {
-	cout << "string create" << endl;
   istringstream iss (s);
-	cout << "s: " << s << endl;
 	if (iss) {
 		string val;
-		while(true) {
+  	while (std::getline(iss, val)) {
 			iss >> val;
-			if (iss.eof()) {
-				break;
+			cout << val << endl;
+			// if (iss.eof()) {
+			// 	break;
+			// }
+			mLen = val.length();
+			mLL = new SLinkedList;
+			for (int i=0; i<mLen; i++) {
+				mLL->addBack(val[i] - 48); // from ASCII chars
 			}
-		}
-		mLen = val.length();
-		mLL = new SLinkedList;
-		for (int i=0; i<mLen; i++) {
-			mLL->addBack(val[i] - 48); // from ASCII chars
-		}
+		}	
 	} else {
 		cerr << "no input found";
 	}
-	cout << "is this finished?" << endl;
 }
 
 void Jumbo::cleanup()
 {
-	cout << "cleanupp" << endl;
-  delete mLL;
-	cout << "cleaned" << endl;
+ delete mLL; 
 }
 
 // Destructor
 Jumbo::~Jumbo()
 {
-	cout << "destroid" << endl;
   cleanup();
 	delete this;
 }
 
 // Copy constructor
 Jumbo::Jumbo(const Jumbo& other) {
-	cout << "copy" << endl;
 	copy(other);
 }
 
 void Jumbo::copy(const Jumbo & other)
 {
 	if (other.mLen > 0) {
-		cout << "copy. I've found the loop" << endl;
 		cleanup();
-		cout << "after cleanup" << endl;
 		mLen = other.mLen;
 		mLL = other.mLL;
-		cout << "after reassign" << endl;
 	}	
 }
 
 // Assignment operator
 Jumbo& Jumbo::operator=(const Jumbo & other) {
-	cout << "assign" << endl;
   if (this != &other) {
-		cout << "not equal yo" << endl;
-		cout << "other:" << (other).str() << endl; 
     copy(other);
-		cout << "after copy" << endl;
   }
-	cout << "Returning this?" << endl;
   return *this;
 }
 
@@ -99,19 +85,15 @@ Jumbo Jumbo::add(const Jumbo& other) const {
 	for (int i=0; (mLen >= i && oLen > i); i++) {
 		int idx = smallest - i;
 		int sum = getASCIISum(oAddend[idx], mAddend[idx]);
-		cout << "sum" << sum;
 		if (sum == 0) {
 			total[idx] = '0';
 		} else {
 			addToTotal(sum, idx, total);
 		}
-		cout << "total: " << total << endl;
 		stringstream ss;
 		string remainder = getRemainder(mAddend, oAddend);
 		ss << remainder;
 		ss >> total;
-		cout << "remainder =" << remainder << endl;
-		cout << "total" << total << endl;
 	}
 	Jumbo t(total);
 	delete[] total;
@@ -123,7 +105,6 @@ void Jumbo::addToTotal(int sum, int i, char * s) const {
 		s[i] = '0' + s[i] + (sum % 10);
 		return;
 	}
-	cout << "add to total" << endl;
 	s[i -1] = '0' + (sum / 10);
 	s[i] = s[i] + (sum % 10);
 }
@@ -136,17 +117,18 @@ string Jumbo::getRemainder(string s1, string s2) const {
 
 string Jumbo::str() const {
 	string vals;
-	if (mLen == 0) return "0";
+	string empty = "0";
+	if (!mLen || mLen == 0) return empty;
 	for (int i=0; i < mLen; i++) {
-		unsigned int v = mLL->nth(i);
+		if (mLL->getSize() >= i || mLL->getSize() == 0) break;
+		int v = mLL->nth(i);
+		cout << "v: " << v << endl;
 		vals.append(to_string(v));
 	}
-	cout << "vals: " << vals << endl;
 	return vals;
 }
 
 void Jumbo::createList(string s) {
-	cout << "creating list";
 	unsigned int nValue = 0; // convert to int if string
 	stringstream sInt(s);
 	sInt >> nValue;
@@ -163,7 +145,6 @@ void Jumbo::createList(unsigned int n) {
 		divisor = divisor * 10;
 	}
 	while (n > 0) {
-		cout << "adding back";
 		mLL->addBack(n/divisor);
 		n = n%divisor;
 		divisor = divisor / 10;
@@ -177,6 +158,7 @@ void Jumbo::setLen(unsigned int n) {
 		len++;
 	}
 	mLen = len;
+	cout << "mLen: " << mLen << endl;
 }
 
 int Jumbo::getLen() const {

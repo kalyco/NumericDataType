@@ -11,7 +11,7 @@ using namespace std;
 class Jumbo {
  private:
   SLinkedList * mLL;
-  size_t mLen;
+  int mLen;
 
   void copy(const Jumbo & other);
   void cleanup();
