@@ -68,6 +68,7 @@ class SLinkedList {
   /// Delete everything
   void removeAll()
   {
+    cout << "this could be a problem yeah?" << endl;
     while(mSize > 0) {
       removeFront();
     }

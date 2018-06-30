@@ -4,24 +4,31 @@ Running sum is: 0
 
 Add:  copy
 string create
+s: 9789089080808908089080808098908908908908
+is this finished?
 vals: 9789089080808908089080808098908908908908
 sum9total: 9
 remainder =9789089080808908089080808098908908908908
 total9789089080808908089080808098908908908908
 string create
+s: 9789089080808908089080808098908908908908
+is this finished?
 assign
 not equal yo
+other:vals: 9789089080808908089080808098908908908908
+9789089080808908089080808098908908908908
 copy. I've found the loop
 cleanupp
+this could be a problem yeah?
 cleaned
 after cleanup
 after reassign
 after copy
+Returning this?
 destroid
 cleanupp
+this could be a problem yeah?
 cleaned
 destroid
 cleanupp
-cleaned
-destroid
-cleanupp
+this could be a problem yeah?

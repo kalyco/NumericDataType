@@ -23,6 +23,7 @@ Jumbo::Jumbo(const string& s)
 {
 	cout << "string create" << endl;
   istringstream iss (s);
+	cout << "s: " << s << endl;
 	if (iss) {
 		string val;
 		while(true) {
@@ -39,12 +40,13 @@ Jumbo::Jumbo(const string& s)
 	} else {
 		cerr << "no input found";
 	}
+	cout << "is this finished?" << endl;
 }
 
 void Jumbo::cleanup()
 {
 	cout << "cleanupp" << endl;
-  mLL->removeAll();
+  delete mLL;
 	cout << "cleaned" << endl;
 }
 
@@ -53,6 +55,7 @@ Jumbo::~Jumbo()
 {
 	cout << "destroid" << endl;
   cleanup();
+	delete this;
 }
 
 // Copy constructor
@@ -78,9 +81,11 @@ Jumbo& Jumbo::operator=(const Jumbo & other) {
 	cout << "assign" << endl;
   if (this != &other) {
 		cout << "not equal yo" << endl;
+		cout << "other:" << (other).str() << endl; 
     copy(other);
 		cout << "after copy" << endl;
   }
+	cout << "Returning this?" << endl;
   return *this;
 }
 
@@ -158,6 +163,7 @@ void Jumbo::createList(unsigned int n) {
 		divisor = divisor * 10;
 	}
 	while (n > 0) {
+		cout << "adding back";
 		mLL->addBack(n/divisor);
 		n = n%divisor;
 		divisor = divisor / 10;
