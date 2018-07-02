@@ -21,7 +21,7 @@ class Jumbo {
   void createList(unsigned int n);
   int convertToASCII(char s) const;
   int getASCIISum(char c1, char c2) const;
-  string getRemainder(string s1, string s2) const;
+  void setRemainder(int, char *, string) const;
   void addToTotal(int sum, int i, char * s) const;
 
  public:

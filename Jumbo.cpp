@@ -80,46 +80,61 @@ Jumbo Jumbo::add(const Jumbo& other) const {
 	string oAddend = other.str();
 	string mAddend = str();
 	if (oAddend == "0" || mAddend == "0") return oAddend == "0" ? mAddend : oAddend;
-	int oLen = other.mLen;
-	int smallest = (mLen < oLen ? mLen : oLen); // Size of numbers to add
-	int biggest = (mLen > oLen ? mLen : oLen); // Size of str array
+	string bString = mLen > other.mLen ? mAddend : oAddend;
+	string sString = mLen < other.mLen ? mAddend : oAddend;
+	
+	cout << "adding " << oAddend << " to " << mAddend << endl;
+
+	int smallest = min(mLen, other.mLen);
+	int biggest = max(mLen, other.mLen);
+	int diff = (biggest - smallest);
 	char * total = new char[biggest];
 	for (int i=0; i < smallest; i++) {
-		int idx = (biggest) - i; // start backwards
-		int sum = mLL.nth(i) + other.mLL.nth(i);
+		int bIdx = biggest - i; // start backwards
+		int sIdx = smallest - i;
+		int sum = getASCIISum(bString[bIdx], sString[sIdx]);
 		if (sum == 0) {
 			total[i] = '0';
 		} else {
-			addToTotal(sum, idx, total);
+			addToTotal(sum, bIdx, total);
 		}
 	}
-	cout << "total: " << total << endl;
-	stringstream ss;
-	string remainder = getRemainder(mAddend, oAddend);
-	ss << remainder;
-	ss >> total;
+	// cout << "total: ";
+	// for (int i=0; i< biggest; i++) {
+	// 	cout << total[i];
+	// }
+	setRemainder(diff, total, bString);
+	cout << "new total: ";
+	for (int i=0; i < biggest; i++) {
+		cout << total[i];
+	}
 	Jumbo t(total);
 	delete[] total;
 	return t;
 }
 
 void Jumbo::addToTotal(int sum, int i, char * s) const {
-	// todo: check if setting null type '0' is accurate
 	if (i < 0) {
 		s[i] = '0' + s[i] + (sum % 10);
-		return;
+		return; 
 	}
 	if (!s[i]) s[i] = '0';
 	s[i -1] = '0' + (sum / 10);
-	s[i] = s[i] + (sum % 10);
+	int t = s[i] + (sum % 10) - 48;
+	if (t == 10 || t == 0) {
+		if (t == 10) s[i-1] = '1';
+		s[i] = '0';
+	} else {
+		s[i] = s[i] + sum % 10;
+	}
 }
 
-string Jumbo::getRemainder(string s1, string s2) const {
-	string bigger = s1.length() > s2.length() ? s1 : s2;
-	int diff = bigger == s1 ? s1.length() - s2.length() : s2.length() - s1.length();
-	string d = bigger.substr(0, diff + 1);
-	cout << "d: " << d << endl;
-	return d;
+void Jumbo::setRemainder(int len, char * res, string str) const {
+	const char *cstr = str.c_str();
+	addToTotal(cstr[len-1], len-1, res);
+	for (int i = 0; i < len; i++) {
+		res[i] = cstr[i];
+	}
 }
 
 string Jumbo::str() const {
@@ -153,7 +168,6 @@ void Jumbo::createList(unsigned int n) {
 		mLL.addFront(n/divisor);
 		n = n%divisor;
 		divisor = divisor / 10;
-		mLL.reverse();
 	}
 }
 
