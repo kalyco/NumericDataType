@@ -10,13 +10,13 @@ using namespace std;
 
 class Jumbo {
  private:
-  SLinkedList * mLL;
+  SLinkedList mLL;
   int mLen;
 
   void copy(const Jumbo & other);
   void cleanup();
 
-  void setLen(unsigned int n);
+  int setLen(unsigned int n);
   void createList(string s);
   void createList(unsigned int n);
   int convertToASCII(char s) const;

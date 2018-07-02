@@ -18,7 +18,7 @@ int main() {
 
     if (instr == ".")
       break;
-
+    
     Jumbo a = total; // create a from running total (test copy constructor)
     Jumbo b(instr); // create b from input (test string constructor)
     Jumbo c = a.add(b); // create c from adding a and b (test add function)
