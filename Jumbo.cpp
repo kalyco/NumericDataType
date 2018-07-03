@@ -39,7 +39,7 @@ Jumbo::Jumbo(const string& s)
 	} else {
 		cerr << "no input found";
 	}
-	// cout << str() << endl;
+	cout << str() << endl;
 }
 
 void Jumbo::cleanup()
@@ -77,17 +77,13 @@ Jumbo& Jumbo::operator=(const Jumbo & other) {
 }
 
 Jumbo Jumbo::add(const Jumbo& other) const {
-	string oAddend = other.str();
-	string mAddend = str();
-	if (oAddend == "0" || mAddend == "0") return oAddend == "0" ? mAddend : oAddend;
-	string bString = mLen > other.mLen ? mAddend : oAddend;
-	string sString = mLen < other.mLen ? mAddend : oAddend;
-	
-	cout << "adding " << oAddend << " to " << mAddend << endl;
+	string bString = mLen >= other.mLen ? str() : other.str();
+	string sString = mLen < other.mLen ? str() : other.str();
+	if (sString == "0") return bString;
 
-	int smallest = min(mLen, other.mLen);
-	int biggest = max(mLen, other.mLen);
-	int diff = (biggest - smallest);
+	unsigned long smallest = min(mLen, other.mLen) + 1;
+	unsigned long biggest = max(mLen, other.mLen) + 1;
+	unsigned long diff = (biggest - smallest);
 	char * total = new char[biggest];
 	for (int i=0; i < smallest; i++) {
 		int bIdx = biggest - i; // start backwards
@@ -99,16 +95,10 @@ Jumbo Jumbo::add(const Jumbo& other) const {
 			addToTotal(sum, bIdx, total);
 		}
 	}
-	// cout << "total: ";
-	// for (int i=0; i< biggest; i++) {
-	// 	cout << total[i];
-	// }
 	setRemainder(diff, total, bString);
-	cout << "new total: ";
-	for (int i=0; i < biggest; i++) {
-		cout << total[i];
-	}
-	Jumbo t(total);
+	
+	string f(total);
+	Jumbo t(f);
 	delete[] total;
 	return t;
 }
