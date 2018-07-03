@@ -12,7 +12,7 @@ using namespace std;
 
 Jumbo::Jumbo(unsigned int value)
 {
-	mLen = setLen(value + 1);
+	mLen = setLen(value);
 	mLL = SLinkedList();
 	setLen(value);
 	createList(value);
@@ -20,20 +20,16 @@ Jumbo::Jumbo(unsigned int value)
 
 Jumbo::Jumbo(const string& s)
 {
-	mLen = s.length() + 1;
 	mLL = SLinkedList();
   istringstream iss (s);
 	if (iss) {
 		string val;
   	while (std::getline(iss, val)) {
 			iss >> val;
-			// if (iss.eof()) {
-			// 	break;
-			// }
-			mLen = val.length() + 1;
-			for (int i=0; i<mLen; i++) {
+			mLen = val.length();
+			for (int i=0; i < mLen; i++) {
 				int v = val[i] - 48;
-				mLL.addBack(v); // from ASCII chars
+				mLL.addBack(v);
 			}
 		}	
 	} else {
@@ -49,7 +45,7 @@ void Jumbo::cleanup()
 // Destructor
 Jumbo::~Jumbo()
 {
-	if (mLen > 1) {
+	if (mLen > 0) {
   	cleanup();
 	}	
 }
@@ -61,7 +57,7 @@ Jumbo::Jumbo(const Jumbo& other) {
 
 void Jumbo::copy(const Jumbo & other)
 {
-	if (other.mLen > 1) {
+	if (other.mLen > 0) {
 		cleanup();
 	}
 	mLen = other.mLen;
@@ -81,11 +77,14 @@ Jumbo Jumbo::add(const Jumbo& other) const {
 	string sString = mLen < other.mLen ? str() : other.str();
 	if (sString == "0") return bString;
 
-	unsigned long smallest = min(mLen, other.mLen) + 1;
-	unsigned long biggest = max(mLen, other.mLen) + 1;
+	unsigned long smallest = min(mLen, other.mLen);
+	unsigned long biggest = max(mLen, other.mLen);
 	unsigned long diff = (biggest - smallest);
 	char * total = new char[biggest];
-	for (int i=0; i < smallest; i++) {
+	for (int i=0; i < biggest; i++) {
+		total[i] = '0';
+	}
+	for (int i=0; i < smallest + 1; i++) {
 		int bIdx = biggest - i; // start backwards
 		int sIdx = smallest - i;
 		int sum = getASCIISum(bString[bIdx], sString[sIdx]);
@@ -95,10 +94,11 @@ Jumbo Jumbo::add(const Jumbo& other) const {
 			addToTotal(sum, bIdx, total);
 		}
 	}
+	// for (int i=0; i < biggest; i++) {
+	// 	cout << total[i] << endl;
+	// }	
 	setRemainder(diff, total, bString);
-	
-	string f(total);
-	Jumbo t(f);
+	Jumbo t(total);
 	delete[] total;
 	return t;
 }
@@ -106,10 +106,12 @@ Jumbo Jumbo::add(const Jumbo& other) const {
 void Jumbo::addToTotal(int sum, int i, char * s) const {
 	if (i < 0) {
 		s[i] = '0' + s[i] + (sum % 10);
-		return; 
+		return;
 	}
-	if (!s[i]) s[i] = '0';
-	s[i -1] = '0' + (sum / 10);
+	if (s[i] != '1' && s[i] != '0') {
+		s[i] = '0';
+	}
+	s[i -1] = s[i-1] + (sum / 10);
 	int t = s[i] + (sum % 10) - 48;
 	if (t == 10 || t == 0) {
 		if (t == 10) s[i-1] = '1';
@@ -130,8 +132,8 @@ void Jumbo::setRemainder(int len, char * res, string str) const {
 string Jumbo::str() const {
 	string vals;
 	string empty = "0";
-	if (mLen == 1 && (mLL.front() == 0)) return empty;
-	for (int i=0; i < (mLen - 1); i++) {
+	if (mLen == 0 && (mLL.front() == 0)) return empty;
+	for (int i=0; i < mLen; i++) {
 		int v = mLL.nth(i);
 		vals.append(to_string(v));
 	}
@@ -146,8 +148,8 @@ void Jumbo::createList(string s) {
 }
 
 void Jumbo::createList(unsigned int n) {
-	if (n == 0) {
-		mLL.addFront(n);
+	if (mLen == 0 || n == 0) {
+		mLL.addFront(0);
 		return;
 	}
 	int divisor = 1;
